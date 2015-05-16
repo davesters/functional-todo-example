@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/app/css/index.css">
+  </head>
+  <body>
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <form id="add-todo" action="#" method="post">
+          <input name="todo" class="new-todo" placeholder="What needs to be done?" autofocus>
+        </form>
+      </header>
+
+      <section class="main">
+        <ul class="todo-list">
+          {{#todos}}
+            <li  data-id="{{id}}"{{#completed}} class="completed"{{/completed}}>
+              <div class="view">
+                <input class="toggle" type="checkbox" {{#completed}}checked="checked"{{/completed}}>
+                <label>{{todo}}</label>
+                <button class="destroy"></button>
+              </div>
+              <input class="edit" value="{{todo}}">
+            </li>
+          {{/todos}}
+      </section>
+
+      <footer class="footer">
+        <span class="todo-count"><strong>{{total}}</strong> item(s) left</span>
+      </footer>
+    </section>
+    <footer class="info">
+      <p>Adapted from <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+
+    <script id="todo-template" type="text/html">
+      <li data-id="<%= id %>">
+        <div class="view">
+          <input class="toggle" type="checkbox">
+          <label><%= todo %></label>
+          <button class="destroy"></button>
+        </div>
+        <input class="edit" value="<%= todo %>" >
+      </li>
+    </script>
+    <script src="/app/js/base.js"></script>
+    <script src="/app/js/lib/jquery-2.1.4.min.js"></script>
+    <script src="/app/js/app.js"></script>
+  </body>
+</html>

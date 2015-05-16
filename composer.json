@@ -1,0 +1,9 @@
+{
+    "require": {
+        "slim/slim": "2.*",
+        "mustache/mustache": "~2.5"
+    },
+    "require-dev": {
+      "phpunit/phpunit": "4.6.6"
+    }
+}
