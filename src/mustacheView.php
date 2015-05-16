@@ -1,6 +1,9 @@
 <?php
 namespace Todo;
 
+/**
+ * Custom Slim view handler which renders handlebars templates.
+ */
 class MustacheView extends \Slim\View
 {
   private $mustache;

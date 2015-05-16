@@ -36,7 +36,7 @@ class TodoApp {
    */
   private function routeHandler($view, $handler) {
     return function(...$params) use ($view, $handler) {
-      $model = $handler->run($params);
+      $model = $handler($params);
 
       $this->app->render($view, $model);
     };
@@ -49,7 +49,7 @@ class TodoApp {
   private function jsonHandler($handler) {
     return function(...$params) use ($handler) {
       $params = array_merge($params, $this->app->request->post());
-      $model = $handler->run($params);
+      $model = $handler($params);
 
       echo json_encode($model);
     };

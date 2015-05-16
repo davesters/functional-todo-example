@@ -19,7 +19,7 @@ mysql:
    - MYSQL_PASS=mtgdb1
   volumes:
    - /var/lib/mysql:/var/lib/mysql
-adminer:
-  image: clue/adminer
-  ports:
-   - "3307:80"
+# adminer:
+#   image: clue/adminer
+#   ports:
+#    - "3307:80"

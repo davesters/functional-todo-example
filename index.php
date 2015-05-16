@@ -34,12 +34,11 @@ require 'src/app.php';
 require 'src/mustacheView.php';
 
 // Require all handler classes
-require 'src/handlers/BaseHandler.php';
 require 'src/handlers/IndexHandler.php';
 require 'src/handlers/AddTodoHandler.php';
 require 'src/handlers/UpdateTodoHandler.php';
 
-$db = new Todo\DB(
+$dataSource = Todo\DB::DataSource(
   $_ENV['MYSQL_PORT_3306_TCP_ADDR'],
   $_ENV['MYSQL_ENV_MYSQL_USER'],
   $_ENV['MYSQL_ENV_MYSQL_PASS'],
@@ -47,9 +46,9 @@ $db = new Todo\DB(
 
 // Set up all of the route handlers for this application
 $handlers = [
-  'index' => new Handlers\IndexHandler($db),
-  'add' => new Handlers\AddTodoHandler($db),
-  'update' => new Handlers\UpdateTodoHandler($db)
+  'index' => Handlers\IndexHandler::Handle($dataSource),
+  'add' => Handlers\AddTodoHandler::Handle($dataSource),
+  'update' => Handlers\UpdateTodoHandler::Handle($dataSource)
 ];
 
 $mustache = new Mustache_Engine();
