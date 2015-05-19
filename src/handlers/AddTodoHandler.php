@@ -1,20 +1,14 @@
 <?php
-
-namespace Handlers;
+namespace Todo\Handlers;
 
 /**
  * Add todo handler for adding new todo entries. Returns the id of the created todo.
  */
 class AddTodoHandler {
-  public static function Handle($dataSource) {
-    return function($data) use ($dataSource) {
-      $result = $dataSource('INSERT INTO todos (todo, created) VALUES (?,?)', [
-        $data['todo'],
-        date('Y-m-d H:i:s')
-      ]);
-
+  public static function Handle() {
+    return function($model, $params) {
       return [
-        'id' => intval($result),
+        'id' => $model['id'],
         'success' => true
       ];
     };

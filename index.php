@@ -26,6 +26,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <http://unlicense.org/>
 */
 
+use Todo\DB as DB;
+use Todo\Queries as Queries;
+use Todo\Handlers as Handlers;
+
 date_default_timezone_set('America/Los_Angeles');
 
 require 'vendor/autoload.php';
@@ -33,12 +37,16 @@ require 'src/db.php';
 require 'src/app.php';
 require 'src/mustacheView.php';
 
+//Require all query classes
+require 'src/queries/IndexQuery.php';
+require 'src/queries/AddTodoQuery.php';
+require 'src/queries/UpdateTodoQuery.php';
+
 // Require all handler classes
 require 'src/handlers/IndexHandler.php';
 require 'src/handlers/AddTodoHandler.php';
-require 'src/handlers/UpdateTodoHandler.php';
 
-$dataSource = Todo\DB::DataSource(
+$dataSource = DB::DataSource(
   $_ENV['MYSQL_PORT_3306_TCP_ADDR'],
   $_ENV['MYSQL_ENV_MYSQL_USER'],
   $_ENV['MYSQL_ENV_MYSQL_PASS'],
@@ -46,9 +54,15 @@ $dataSource = Todo\DB::DataSource(
 
 // Set up all of the route handlers for this application
 $handlers = [
-  'index' => Handlers\IndexHandler::Handle($dataSource),
-  'add' => Handlers\AddTodoHandler::Handle($dataSource),
-  'update' => Handlers\UpdateTodoHandler::Handle($dataSource)
+  'index' => [
+    Queries\IndexQuery::Query($dataSource),
+    Handlers\IndexHandler::Handle()
+  ],
+  'add' => [
+    Queries\AddTodoQuery::Query($dataSource),
+    Handlers\AddTodoHandler::Handle()
+  ],
+  'update' => [ Queries\UpdateTodoQuery::Query($dataSource) ]
 ];
 
 $mustache = new Mustache_Engine();
