@@ -29,7 +29,7 @@ class DB {
       }
 
       $counter = 1;
-      foreach($params as $param) {
+      foreach(self::getQueryParams($params) as $param) {
         $stmt->bindValue($counter, $param['value'], $param['type']);
         $counter++;
       }
@@ -47,5 +47,16 @@ class DB {
 
       return $results;
     };
+  }
+
+  private static function getQueryParams($values) {
+    return array_map(function($val) {
+      if (is_integer($val)) {
+        return [ 'type' => \PDO::PARAM_INT, 'value' => $val ];
+      }
+      if (is_string($val)) {
+        return [ 'type' => \PDO::PARAM_STR, 'value' => $val ];
+      }
+    }, $values);
   }
 }

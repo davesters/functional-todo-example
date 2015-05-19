@@ -17,18 +17,18 @@ class UpdateTodoHandler {
         case 'completed':
           $completed = ($data['checked'] === 'true') ? 'NOW()' : 'NULL';
           $result = $dataSource("UPDATE todos SET completed = $completed WHERE id = ?", [
-            [ 'type' => \PDO::PARAM_INT, 'value' => $data['id'] ]
+            $data['id']
           ]);
           break;
         case 'delete':
           $result = $dataSource('UPDATE todos SET deleted = NOW() WHERE id = ?', [
-            [ 'type' => \PDO::PARAM_INT, 'value' => $data['id'] ]
+            $data['id']
           ]);
           break;
         case 'edit':
           $result = $dataSource('UPDATE todos SET todo = ? WHERE id = ?', [
-            [ 'type' => \PDO::PARAM_STR, 'value' => $data['todo'] ],
-            [ 'type' => \PDO::PARAM_INT, 'value' => $data['id'] ]
+            $data['todo'],
+            $data['id']
           ]);
           break;
         default:
