@@ -33,9 +33,9 @@ use Todo\Handlers as Handlers;
 date_default_timezone_set('America/Los_Angeles');
 
 require 'vendor/autoload.php';
-require 'src/db.php';
-require 'src/app.php';
-require 'src/mustacheView.php';
+require 'src/DB.php';
+require 'src/TodoApp.php';
+require 'src/MustacheView.php';
 
 //Require all query classes
 require 'src/queries/IndexQuery.php';
@@ -73,5 +73,5 @@ $app = new Slim\Slim([
 ]);
 
 // Create new todo app. Passing in the Slim app and list of handlers.
-$todoApp = new  Todo\TodoApp($app, $handlers);
+$todoApp = new Todo\TodoApp($app, $handlers);
 $todoApp->start();
