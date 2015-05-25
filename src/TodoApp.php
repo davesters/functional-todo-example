@@ -34,7 +34,7 @@ class TodoApp {
    * It will execute the route handlers that are passed in and then will
    * render the view using the received model.
    */
-  private function routeHandler($view, $handlers) {
+  private function routeHandler($view, array $handlers) {
     return function(...$params) use ($view, $handlers) {
       $params = array_merge($params, $this->app->request->post());
       $model = array_reduce($handlers, function($model, $handler) use ($params) {
@@ -49,7 +49,7 @@ class TodoApp {
    * JSON dhared route handler.
    * Same as main shared handler, but returns the model as json.
    */
-  private function jsonHandler($handlers) {
+  private function jsonHandler(array $handlers) {
     return function(...$params) use ($handlers) {
       $params = array_merge($params, $this->app->request->post());
       $model = array_reduce($handlers, function($model, $handler) use ($params) {
