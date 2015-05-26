@@ -4,6 +4,6 @@
         "mustache/mustache": "~2.5"
     },
     "require-dev": {
-      "phpunit/phpunit": "4.6.6"
+        "jacobstr/matura": "^0.2.1"
     }
 }
