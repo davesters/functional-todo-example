@@ -1,7 +1,7 @@
 {
     "require": {
-        "slim/slim": "2.*",
-        "mustache/mustache": "~2.5"
+      "klein/klein": "^2.1",
+      "mustache/mustache": "~2.5"
     },
     "require-dev": {
         "jacobstr/matura": "^0.2.1"

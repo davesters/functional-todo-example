@@ -25,6 +25,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
 */
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
 
 use Todo\DB as DB;
 use Todo\Queries as Queries;
@@ -46,11 +48,16 @@ require 'src/queries/UpdateTodoQuery.php';
 require 'src/handlers/IndexHandler.php';
 require 'src/handlers/AddTodoHandler.php';
 
-$dataSource = DB::DataSource(
-  $_ENV['MYSQL_PORT_3306_TCP_ADDR'],
-  $_ENV['MYSQL_ENV_MYSQL_USER'],
-  $_ENV['MYSQL_ENV_MYSQL_PASS'],
-  $_ENV['MYSQL_ENV_DB_NAME']);
+// Create PDO database object
+$pdo = null;
+try {
+    $pdo = new \PDO('mysql:host=' . $_ENV['MYSQL_PORT_3306_TCP_ADDR'] . ';dbname=' . $_ENV['MYSQL_ENV_DB_NAME'], $_ENV['MYSQL_ENV_MYSQL_USER'], $_ENV['MYSQL_ENV_MYSQL_PASS'], array(
+        \PDO::ATTR_PERSISTENT => true
+    ));
+} catch (\PDOException $e) {
+    exit("Database connection error: " . $e->getMessage());
+}
+$dataSource = DB::MysqlDataSource($pdo);
 
 // Set up all of the route handlers for this application
 $handlers = [
@@ -65,13 +72,12 @@ $handlers = [
   'update' => [ Queries\UpdateTodoQuery::Query($dataSource) ]
 ];
 
-$mustache = new Mustache_Engine();
-$app = new Slim\Slim([
-  'view' => new Todo\MustacheView($mustache, function($template) {
-    return file_get_contents(__DIR__ . "/views/$template.hbs");
-  })
-]);
+$mustacheView = new Todo\MustacheView(new Mustache_Engine(), function($template) {
+    return file_get_contents(__DIR__ . "/views/$template.mustache");
+});
+$klein = new \Klein\Klein();
 
-// Create new todo app. Passing in the Slim app and list of handlers.
-$todoApp = new Todo\TodoApp($app, $handlers);
+// Create new todo app. Passing in the Klein app and list of handlers.
+$todoApp = new Todo\TodoApp($klein, $mustacheView, $handlers);
+$todoApp->setRoutes();
 $todoApp->start();

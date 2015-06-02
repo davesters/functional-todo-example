@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !^(/app/css/.*)$
+RewriteCond %{REQUEST_URI} !^(/app/js/.*)$
+
+RewriteRule ^(.+)$ index.php [L]
