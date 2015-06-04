@@ -37,7 +37,7 @@ date_default_timezone_set('America/Los_Angeles');
 require 'vendor/autoload.php';
 require 'src/DB.php';
 require 'src/TodoApp.php';
-require 'src/MustacheView.php';
+require 'src/Mustache.php';
 
 //Require all query classes
 require 'src/queries/IndexQuery.php';
@@ -72,12 +72,12 @@ $handlers = [
   'update' => [ Queries\UpdateTodoQuery::Query($dataSource) ]
 ];
 
-$mustacheView = new Todo\MustacheView(new Mustache_Engine(), function($template) {
-    return file_get_contents(__DIR__ . "/views/$template.mustache");
+$mustache = Todo\Mustache::Render(new Mustache_Engine(), function($tpl) {
+    return file_get_contents(__DIR__ . "/views/$tpl.mustache");
 });
 $klein = new \Klein\Klein();
 
 // Create new todo app. Passing in the Klein app and list of handlers.
-$todoApp = new Todo\TodoApp($klein, $mustacheView, $handlers);
+$todoApp = new Todo\TodoApp($klein, $mustache, $handlers);
 $todoApp->setRoutes();
 $todoApp->start();

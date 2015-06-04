@@ -14,7 +14,7 @@ class TodoApp
     private $handlers;
     private $mustache;
 
-    public function __construct(Klein $app, MustacheView $mustache, array $handlers)
+    public function __construct(Klein $app, $mustache, array $handlers)
     {
         $this->app = $app;
         $this->handlers = $handlers;
@@ -57,7 +57,11 @@ class TodoApp
                 return $handler($model, $params);
             }, []);
 
-            $this->app->response()->body($this->mustache->render($view, $model));
+            // We have to assign $this->mustache to a local variable before we can call it
+            // like a normal function. Because PHP.
+            $mustache = $this->mustache;
+
+            $this->app->response()->body($mustache($view, $model));
             $this->app->response()->send();
         };
     }
