@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker-compose run --rm web ./vendor/bin/mat test tests/
+docker-compose run --rm --no-deps web ./vendor/bin/mat test tests/
